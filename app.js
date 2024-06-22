@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
             dayLabel.style.color = '#64B5F6';
         },
         onDayClick: function (dayContainer, date) {
+            dayContainer.classList.toggle('holiday');
             console.log(date);
+        },
+        onYearChanged: function (previousYear, currentYear) {
+            console.log(previousYear, currentYear);
         }
     })
 })

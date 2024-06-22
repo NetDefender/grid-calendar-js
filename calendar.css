@@ -2,12 +2,34 @@
   display: grid;
   grid-template-rows: auto auto;
   font-family: "Roboto", sans-serif;
-  font-size: 14px;
+  font-size: medium;
   color: #444;
   flex-direction: column;
-  border: 1px solid black;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 5px;
   justify-content: center;
+  padding: 10px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  padding: 10px;
+  font-size: small;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.calendar-year {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.calendar-year:hover,
+.calendar-year-selected {
+  font-weight: 600;
 }
 
 .calendar-months {
@@ -15,6 +37,7 @@
   flex-wrap: wrap;
   justify-content: center;
   margin: auto;
+  padding: 10px;
 }
 
 .calendar-month {
@@ -22,7 +45,7 @@
   grid-template-rows: 1fr 1fr 5fr;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 5px;
-  padding: 5px;
+  padding: 13px;
   margin: 5px;
   font-size: small;
   min-width: 100px;
@@ -59,7 +82,9 @@
   justify-content: center;
   align-items: center;
   max-height: 10px;
-  padding: 5px;
+  /* arriba | derecha | abajo | izquierda */
+  padding-top: 6px;
+  padding-bottom: 6px;
   /* border: 1px solid black; */
 }
 
@@ -71,5 +96,6 @@
 
 .calendar-day-not-empty:hover {
   background-color: #f2f2f2;
-  border-radius: 7px;
+  color: black;
+  border-radius: 2px;
 }

@@ -15,6 +15,7 @@
  * @param {CalendarOptions} options 
  */
 function createCalendar(options) {
+    let currentYear = options.currentYear;
     const localization = getLocalization();
     const calendar = document.getElementById(options.elementId);
     calendar.classList.add('calendar');
@@ -24,7 +25,8 @@ function createCalendar(options) {
     const months = document.createElement('div');
     months.classList.add('calendar-months');
 
-    createMonths(options.currentYear);
+    createHeader();
+    createMonths(currentYear);
 
     calendar.appendChild(header);
     calendar.appendChild(months);
@@ -38,6 +40,20 @@ function createCalendar(options) {
                 options.onDayClick(e.target, date);
             }
         })
+    }
+
+    function createHeader() {
+        for (let year = options.minYear; year <= options.maxYear; year++) {
+            header.appendChild(createYear(year));
+        }
+    }
+
+    function createYear(year) {
+        const yearContainer = document.createElement('div');
+        yearContainer.classList.add('calendar-year');
+        yearContainer.dataset.year = year;
+        yearContainer.textContent = year;
+        return yearContainer;
     }
 
     function createMonths(year) {
