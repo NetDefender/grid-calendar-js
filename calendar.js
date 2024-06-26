@@ -24,12 +24,11 @@ function createCalendar(options) {
     header.classList.add('calendar-header');
     const months = document.createElement('div');
     months.classList.add('calendar-months');
+    calendar.appendChild(header);
+    calendar.appendChild(months);
 
     createHeader();
     createMonths(currentYear);
-
-    calendar.appendChild(header);
-    calendar.appendChild(months);
 
     if (options.onDayClick) {
         const calendarDays = document.querySelector(`#${options.elementId}`);
@@ -43,6 +42,21 @@ function createCalendar(options) {
     }
 
     function createHeader() {
+        header.addEventListener('click', function (e) {
+            if (e.target.classList.contains('calendar-year')) {
+                const previousYear = currentYear;
+                currentYear = parseInt(e.target.dataset.year);
+                const yearSelected = this.querySelector('.calendar-year-selected');
+                if (yearSelected) {
+                    yearSelected.classList.remove('calendar-year-selected');
+                }
+                this.querySelector(`[data-year="${currentYear}"]`).classList.add('calendar-year-selected');
+                createMonths(currentYear);
+                if (options.onYearChanged) {
+                    options.onYearChanged(previousYear, currentYear);
+                }
+            }
+        })
         for (let year = options.minYear; year <= options.maxYear; year++) {
             header.appendChild(createYear(year));
         }
@@ -53,10 +67,14 @@ function createCalendar(options) {
         yearContainer.classList.add('calendar-year');
         yearContainer.dataset.year = year;
         yearContainer.textContent = year;
+        if (currentYear === year) {
+            yearContainer.classList.add('calendar-year-selected');
+        }
         return yearContainer;
     }
 
     function createMonths(year) {
+        months.textContent = '';
         for (let i = 0; i < 12; i++) {
             months.appendChild(createMonth(year, i));
         }
@@ -103,17 +121,21 @@ function createCalendar(options) {
         const daysContainer = document.createElement('div');
         daysContainer.classList.add('calendar-days');
         const day = new Date(year, month, 1);
-        createMonthPadding(day.getDay()).forEach(paddingDay => daysContainer.appendChild(paddingDay));
+        const paddingStartDays = createMonthPaddingStart(day.getDay());
+        paddingStartDays.forEach(paddingDay => daysContainer.appendChild(paddingDay));
 
         while (day.getMonth() === month) {
             daysContainer.appendChild(createDay(day));
             day.setDate(day.getDate() + 1);
         }
+        day.setDate(day.getDate() - 1);
+        const paddingEndDays = createMonthPaddingEnd(paddingStartDays.length, day);
+        paddingEndDays.forEach(paddingDay => daysContainer.appendChild(paddingDay));
 
         return daysContainer;
     }
 
-    function createMonthPadding(day) {
+    function createMonthPaddingStart(day) {
         const paddingDays = [];
         let count = day - 1;
 
@@ -124,8 +146,42 @@ function createCalendar(options) {
         for (let i = 0; i < count; i++) {
             const paddingDay = document.createElement('div');
             paddingDay.classList.add('calendar-day');
+            paddingDay.textContent = ' ';
             paddingDays.push(paddingDay);
         }
+
+        return paddingDays;
+    }
+
+    /**
+     * 
+     * @param {number} paddingStartCount 
+     * @param {Date} day 
+     */
+    function createMonthPaddingEnd(paddingStartCount, day) {
+        const paddingDays = [];
+        const totalDays = day.getDate() + paddingStartCount;
+        let rows = Math.floor(totalDays / 7);
+        const remainder = totalDays % 7;
+
+        console.log(rows);
+        for (let i = 0; i < 7 - remainder; i++) {
+            const paddingDay = document.createElement('div');
+            paddingDay.classList.add('calendar-day');
+            paddingDay.textContent = ' ';
+            paddingDays.push(paddingDay);
+        }
+
+        for (let i = rows + 1; i < 6; i++) {
+            for (let j = 0; j < 7; j++) {
+                const paddingDay = document.createElement('div');
+                paddingDay.classList.add('calendar-day');
+                paddingDay.textContent = ' ';
+                paddingDays.push(paddingDay);
+            }
+        }
+
+        //console.log(totalDays, rows, day.getMonth(), paddingDays.length)
 
         return paddingDays;
     }

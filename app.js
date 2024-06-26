@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
+    console.log(location.search);
     createCalendar({
         elementId: 'calendar',
         lang: 'es',
         minYear: 2020,
-        maxYear: 2024,
+        maxYear: 2050,
         currentYear: 2024,
         onRenderDay: function (dayContainer, date) {
             if (date.getDay() === 0 || date.getDay() === 6) {
