@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    console.log(location.search);
     createCalendar({
         elementId: 'calendar',
         lang: 'es',
@@ -15,8 +14,10 @@ document.addEventListener('DOMContentLoaded', function () {
             dayLabel.style.color = '#64B5F6';
         },
         onDayClick: function (dayContainer, date) {
+            if (date.getDay() === 0) {
+                return;
+            }
             dayContainer.classList.toggle('holiday');
-            console.log(date);
         },
         onYearChanged: function (previousYear, currentYear) {
             console.log(previousYear, currentYear);

@@ -33,10 +33,12 @@ function createCalendar(options) {
     if (options.onDayClick) {
         const calendarDays = document.querySelector(`#${options.elementId}`);
         calendarDays.addEventListener('click', function (e) {
-            if (e.target.classList.contains('calendar-day')) {
+            if (e.target.classList.contains('calendar-day-not-empty')) {
                 const date = new Date(e.target.dataset.year, e.target.dataset.month, e.target.dataset.day);
                 date.setHours(0, 0, 0, 0);
-                options.onDayClick(e.target, date);
+                if (options.onDayClick) {
+                    options.onDayClick(e.target, date);
+                }
             }
         })
     }
